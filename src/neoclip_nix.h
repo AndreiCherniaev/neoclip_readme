@@ -1,6 +1,6 @@
 /*
  * neoclip - Neovim clipboard provider
- * Last Change:  2025 Aug 11
+ * Last Change:  2025 Sep 24
  * License:      https://unlicense.org
  * URL:          https://github.com/matveyt/neoclip
  */
@@ -8,8 +8,6 @@
 
 #if !defined(NEOCLIP_NIX_H)
 #define NEOCLIP_NIX_H
-
-#define _DEFAULT_SOURCE
 
 #if !defined(WITH_THREADS) && !defined(WITH_LUV)
 #define WITH_LUV

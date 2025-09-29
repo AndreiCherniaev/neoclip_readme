@@ -1,11 +1,12 @@
 /*
  * neoclip - Neovim clipboard provider
- * Last Change:  2025 Jun 21
+ * Last Change:  2025 Sep 24
  * License:      https://unlicense.org
  * URL:          https://github.com/matveyt/neoclip
  */
 
 
+#define _POSIX_C_SOURCE 199506L
 #include "neo_wayland.h"
 #include <unistd.h>
 

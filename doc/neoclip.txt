@@ -15,12 +15,12 @@ Supported platforms are Windows, macOS and *nix (with X11 or Wayland).
 AUTOLOAD						    *neoclip-autoload*
 
 |Neoclip| is loaded by default. You don't need to add anything to your
-|config|. Yet if you wish to skip it then configure another
+|config|. But if you want to skip it then configure another
 |provider-clipboard|. E.g., `:runtime autoload/provider/clipboard.vim` to use
 Neovim's default instead.
 
 If you share same |config| between Vim and Neovim then it is advisable to
-install |neoclip| under `opt/` tree and use |:packadd| command >
+install |neoclip| under `opt/` tree and execute |:packadd| command >
 
     if has('nvim')
         packadd! neoclip
@@ -29,15 +29,15 @@ install |neoclip| under `opt/` tree and use |:packadd| command >
 ==============================================================================
 BUILDING						       *neoclip-build*
 
-|Neoclip| must be built from source. So you'll need C (or Objective C for
-macOS) compiler and tools installed on your machine.
+|Neoclip| must be built from source. So you'll need C compiler (Objective C
+for macOS) and tools installed on your machine.
 
-You also need a project build tool. Both CMake https://cmake.org and Meson
-https://mesonbuild.com are supported.
+You might also use some project build tool. Both CMake https://cmake.org and
+Meson https://mesonbuild.com are supported.
 
-The common build pre-requisite for all platforms is LuaJIT https://luajit.org.
+A common build pre-requisite for all platforms is LuaJIT https://luajit.org.
 This is because we're going to make a Lua binary extension module for Neovim's
-builtin engine. The exact package name and installation method depend on your
+builtin engine. The exact package name and installation method depends on your
 OS/distro. For example, on Debian GNU/Linux it could be >
 
     $sudo apt install libluajit-5.1-dev
@@ -55,7 +55,7 @@ skipped. >
 
     $sudo apt install extra-cmake-modules
 <
-So now we are able to build our project >
+So now we should be able to build our project >
 
     $ cd ~/.config/nvim/pack/bundle/opt/neoclip/src
 
@@ -94,7 +94,7 @@ FUNCTIONS						   *neoclip-functions*
   macOS they are doing nothing.
 
 							   |neoclip.require()|
-  This method loads binary module into |neoclip.driver| variable. You seldom
+  The method loads binary module into |neoclip.driver| variable. You seldom
   need it as |neoclip.setup()| calls it for you. >
 
   -- force loading of X11 driver only
@@ -103,8 +103,8 @@ FUNCTIONS						   *neoclip-functions*
   neoclip.register()
 <
 							   |neoclip.register()|
-  This method sets or resets |g:clipboard| variable activating the plugin.
-  Usually, you want to call |neoclip.setup()| only. >
+  The method sets or resets |g:clipboard| variable activating the plugin.
+  Normally, you have to call |neoclip.setup()| only. >
 
   -- set Neovim default clipboard-tool
   require"neoclip".register(false)
@@ -113,8 +113,8 @@ FUNCTIONS						   *neoclip-functions*
   require"neoclip".register()
 <
 							      |neoclip.setup()|
-  This method performs module initialization. Basically, it is an equivalent
-  of |neoclip.require()| followed by |neoclip.register()|. Optionally, it also
+  The method performs module initialization. Basically, it is an equivalent of
+  |neoclip.require()| followed by |neoclip.register()|. Optionally, it also
   accepts driver name to pass to |neoclip.require()|. >
 
   -- load and register default driver
@@ -137,10 +137,9 @@ neoclip/X11 will be loaded instead.
 
 								 *neoclip-luv*
 There are two new driver versions for *nix: `neoclip.wluv-driver` and
-`neoclip.x11uv-driver`. They are still considered experimental and not used by
-default. The main difference is that they depend on |luv-event-loop| not
-requiring an extra thread. If you want to try it then pass the driver name
-directly >
+`neoclip.x11uv-driver`. They are still considered experimental. The main
+difference is that they depend on |luv-event-loop| avoiding to create an extra
+thread. If you want to try it then pass a driver name directly >
 
   require"neoclip".setup"neoclip.wluv-driver"
 <
