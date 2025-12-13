@@ -1,13 +1,14 @@
 --[[
     neoclip - Neovim clipboard provider
-    Last Change:    2025 Mar 17
+    Last Change:    2025 Dec 13
     License:        https://unlicense.org
     URL:            https://github.com/matveyt/neoclip
 --]]
 
 
 local function neo_check()
-    local h = vim.health or {
+    local vim = vim
+    local fn, h = vim.fn, vim.health or {
         start = require"health".report_start,
         info = require"health".report_info,
         ok = require"health".report_ok,
@@ -16,7 +17,7 @@ local function neo_check()
     }
     h.start"neoclip"
 
-    if vim.fn.has"clipboard" == 0 then
+    if fn.has"clipboard" == 0 then
         h.error("Clipboard provider is disabled", {
             "Registers + and * will not work",
         })
@@ -41,7 +42,7 @@ local function neo_check()
         return
     end
 
-    local clipboard_id = vim.fn["provider#clipboard#Executable"]()
+    local clipboard_id = fn["provider#clipboard#Executable"]()
     local driver_id = driver.id()
     if clipboard_id == driver_id then
         h.ok(string.format("*%s* driver is in use", driver_id))
@@ -74,24 +75,24 @@ local function neo_check()
         h.warn("Found issues", neoclip.issues)
     end
 
-    local reg_plus, reg_star = vim.fn.getreginfo"+", vim.fn.getreginfo"*"
-    local line_plus, line_star = "На дворе трава", "На траве дрова"
     local uv = vim.uv or vim.loop
     local now = tostring(uv.now())
+    local reg_plus, line_plus = fn.getreginfo"+", "Red lorry, yellow lorry"
+    local reg_star, line_star = fn.getreginfo"*", "Red leather, yellow leather"
 
-    if not driver.set("+", { now, line_plus }, "b") then
+    if not driver.set("+", { now, line_plus }, "\22") then
         h.warn"Driver failed to set register +"
     end
-    if not driver.set("*", { now, line_star }, "b") then
+    if not driver.set("*", { now, line_star }, "\22") then
         h.warn"Driver failed to set register *"
     end
 
     -- for "cache_enabled" provider
     uv.sleep(200)
 
-    local test_plus = vim.fn.getreginfo"+"
-    vim.fn.setreg("+", reg_plus)
-    vim.fn.setreg("*", reg_star)
+    local test_plus = fn.getreginfo"+"
+    fn.setreg("+", reg_plus)
+    fn.setreg("*", reg_star)
 
     if #test_plus.regcontents == 2 and test_plus.regcontents[1] == now and
         (test_plus.regcontents[2] == line_plus or test_plus.regcontents[2] == line_star)
@@ -102,8 +103,7 @@ local function neo_check()
             h.info"NOTE registers + and * are always equal"
         end
 
-        assert(#line_plus == #line_star and #line_plus >= #now)
-        if test_plus.regtype ~= "\22" .. #line_plus then
+        if test_plus.regtype:sub(1, 1) ~= "\22" then
             h.warn(string.format("Block type has been changed to %q", test_plus.regtype),
             {
                 string.format("It looks like %s does not support Vim's native blocks",
@@ -112,7 +112,7 @@ local function neo_check()
         end
     else
         h.error("Clipboard test failed", {
-            "Sometimes, this happens because of `cache_enabled` setting",
+            "Sometimes, it happens because of `cache_enabled` setting",
             "Repeat |:checkhealth| again before reporting a bug",
         })
     end
