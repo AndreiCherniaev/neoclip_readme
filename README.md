@@ -43,16 +43,16 @@ Next, drop to your shell and compile platform-dependent module from source.
 
 4. Compiling
 ```
-    $ cd ~/.config/nvim/pack/minpac/start/neoclip/src
+$ cd ~/.config/nvim/pack/minpac/start/neoclip/src
 
-    $ # by CMake
-    $ cmake -B build
-    $ cmake --build build
-    $ cmake --install build --strip
+$ # by CMake
+$ cmake -S src -B build
+$ cmake --build build
+$ cmake --install build --strip
 
-    $ # ..or by Meson
-    $ meson setup build
-    $ meson install -C build --strip
+$ # ..or by Meson
+$ meson setup build
+$ meson install -C build --strip
 ```
 
 5. Run Neovim again and see if it's all right
