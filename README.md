@@ -51,7 +51,7 @@ $ cmake --build build
 $ cmake --install build --strip
 
 $ # ..or by Meson
-$ meson setup build
+$ meson setup build src
 $ meson install -C build --strip
 ```
 
