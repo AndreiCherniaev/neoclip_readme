@@ -14,6 +14,10 @@ under your packages directory tree, see `:h packages`.
 
 An example for [minpac][2]
 
+0. Download source code
+```
+git clone https://github.com/matveyt/neoclip ~/.config/nvim/pack/minpac/start/neoclip/src
+```
 1. Add to your `init.vim`
 ```
     call minpac#init()
